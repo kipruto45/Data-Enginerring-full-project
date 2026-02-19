@@ -1,0 +1,3 @@
+# No external dependencies required for 05_Movie_Dataset_ETL
+# sqlite3 is part of Python standard library
+# Add to requirements.txt if running in a virtual environment

@@ -1,0 +1,5 @@
+query,time_seconds,rows
+count_facts,0.006370588000208954,1
+sum_amount,0.01663607599948591,1
+group_by_product,0.08775486899867246,5
+join_top,0.08081425000091258,100

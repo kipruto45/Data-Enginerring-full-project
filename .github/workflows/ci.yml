@@ -1,0 +1,66 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Beginner/01_Simple_ETL_CSV_to_DB/requirements.txt
+      - name: Run tests
+        run: pytest -q
+
+  benchmark:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Beginner/01_Simple_ETL_CSV_to_DB/requirements.txt
+      - name: Generate small sample CSV
+        run: |
+          python Beginner/01_Simple_ETL_CSV_to_DB/code/generate_sample_data.py --rows 10000 --out Beginner/01_Simple_ETL_CSV_to_DB/data/raw/sample_data_benchmark.csv
+      - name: Run quick benchmark
+        run: |
+          python Beginner/01_Simple_ETL_CSV_to_DB/code/benchmark_etl.py --csv Beginner/01_Simple_ETL_CSV_to_DB/data/raw/sample_data_benchmark.csv --batch-sizes 1000 5000 --repeats 1 --fast
+      - name: Create benchmark status JSON
+        run: |
+          python - <<'PY'
+import csv, json, statistics, pathlib
+p=pathlib.Path('Beginner/01_Simple_ETL_CSV_to_DB/results/benchmark_results.csv')
+if not p.exists():
+    print('No benchmark results found')
+    raise SystemExit(1)
+rows=[]
+with p.open() as f:
+    reader=csv.DictReader(f)
+    for r in reader:
+        rows.append(r)
+best = max(rows, key=lambda x: float(x['rows_per_s']))
+msg=f"{int(float(best['rows_per_s']))} rows/s"
+out={'schemaVersion':1,'label':'benchmark','message':msg,'color':'brightgreen'}
+outp=pathlib.Path('Beginner/01_Simple_ETL_CSV_to_DB/results/benchmark_status.json')
+outp.write_text(json.dumps(out))
+print('Wrote', outp)
+PY
+      - name: Commit benchmark status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Beginner/01_Simple_ETL_CSV_to_DB/results/benchmark_status.json
+          git commit -m "Update benchmark status" || echo "No changes to commit"
+          git push

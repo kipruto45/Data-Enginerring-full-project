@@ -1,0 +1,13 @@
+count_facts
+(4, 0, 0, 'SCAN fact_sales')
+
+sum_amount
+(3, 0, 0, 'SCAN fact_sales')
+
+group_by_product
+(8, 0, 0, 'SCAN fact_sales')
+(10, 0, 0, 'USE TEMP B-TREE FOR GROUP BY')
+(54, 0, 0, 'USE TEMP B-TREE FOR ORDER BY')
+
+join_top - explain failed: Incorrect number of bindings supplied. The current statement uses 2, and there are 0 supplied.
+

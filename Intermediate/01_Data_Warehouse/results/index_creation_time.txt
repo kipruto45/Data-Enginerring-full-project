@@ -1,0 +1,3 @@
+CREATE INDEX IF NOT EXISTS idx_fact_transaction_date ON fact_sales(transaction_date);
+CREATE INDEX IF NOT EXISTS idx_fact_customer_id ON fact_sales(customer_id);
+CREATE INDEX IF NOT EXISTS idx_fact_product_id ON fact_sales(product_id);
