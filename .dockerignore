@@ -1,0 +1,15 @@
+.git
+.github
+**/__pycache__/
+**/.pytest_cache/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/*.sqlite
+**/*.db
+**/*.log
+.venv
+venv
+node_modules
+*.swp
+*.swo
