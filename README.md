@@ -109,6 +109,47 @@ python Intermediate/03_API_Data_Integration/code/api_etl.py \
   --batch-size 10
 ```
 
+## Docker
+
+Run the repository in a consistent containerized environment.
+
+### 1. Build image
+
+```bash
+docker compose build
+```
+
+### 2. Open an interactive shell in container
+
+```bash
+docker compose run --rm workspace
+```
+
+### 3. Run tests in container
+
+```bash
+docker compose run --rm workspace pytest -q
+```
+
+### 4. Run a project command in container
+
+```bash
+docker compose run --rm workspace \
+  python Beginner/01_Simple_ETL_CSV_to_DB/code/etl_pipeline.py \
+  --input Beginner/01_Simple_ETL_CSV_to_DB/data/raw/sample_data.csv \
+  --db Beginner/01_Simple_ETL_CSV_to_DB/results/output.db
+```
+
+### Airflow note in Docker
+
+This Docker image is focused on project scripts and tests.  
+For Airflow, you can still validate DAG logic using:
+
+```bash
+docker compose run --rm workspace \
+  python Intermediate/02_Airflow_ETL_Pipeline/code/dry_run.py --verbose
+```
+
 ## Testing
 
 Run all tests:

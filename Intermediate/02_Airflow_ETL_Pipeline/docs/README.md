@@ -34,6 +34,21 @@ airflow webserver
 
 5. Open http://localhost:8080 and enable the DAG
 
+## Quick Dry-Run Without Airflow
+
+You can validate task order and callable behavior without installing Airflow:
+
+```bash
+python code/dry_run.py --tasks extract,transform,validate,load,notify --verbose
+```
+
+With Docker (from repository root):
+
+```bash
+docker compose run --rm workspace \
+  python Intermediate/02_Airflow_ETL_Pipeline/code/dry_run.py --verbose
+```
+
 ## DAG Structure
 
 **Tasks:**

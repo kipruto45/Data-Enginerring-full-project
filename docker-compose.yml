@@ -1,0 +1,13 @@
+services:
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: data-engineering-projects:latest
+    container_name: data-engineering-workspace
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    stdin_open: true
+    tty: true
+    command: bash
