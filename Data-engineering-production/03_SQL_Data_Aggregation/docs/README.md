@@ -1,36 +1,35 @@
 # 03_SQL_Data_Aggregation
 
-SQL query examples and Python wrapper for data aggregation on SQLite.
+Runbook for loading sales data and executing SQL aggregations.
 
-## Quick start
+## Load Data
 
-1. Install (if needed): `pip install -r ../requirements.txt` (none required for basic SQLite)
-2. Load CSV data into DB:
-   ```bash
-   python code/aggregation.py --csv data/raw/sales_data.csv --db results/sales.db --load-csv
-   ```
-3. Run a query:
-   ```bash
-   python code/aggregation.py --db results/sales.db --query "SELECT region, SUM(amount) FROM sales GROUP BY region"
-   ```
-4. Run all queries:
-   ```bash
-   python code/aggregation.py --db results/sales.db --run-all
-   ```
+```bash
+python code/aggregation.py --csv data/raw/sales_data.csv --db results/sales.db --load-csv
+```
 
-## Features
+## Execute a Query
 
-- Python wrapper around SQL queries (CSV → SQLite → queries)
-- Pre-defined queries in `code/sql_queries.sql`
-- Logging with execution details
-- Error handling and retry logic
+```bash
+python code/aggregation.py \
+  --db results/sales.db \
+  --query "SELECT product, SUM(amount) AS revenue FROM sales GROUP BY product ORDER BY revenue DESC"
+```
 
-## CLI Options
+## Execute Query Batch
 
-- `--csv PATH` : Input CSV path
-- `--db PATH` : SQLite DB path (default: `results/sales.db`)
-- `--load-csv` : Load CSV into DB first
-- `--query SQL` : Execute a single SQL query
-- `--run-all` : Run all SELECT queries from `sql_queries.sql`
-- `--output PATH` : Output CSV (for batch runs)
+```bash
+python code/aggregation.py --db results/sales.db --queries-file code/sql_queries.sql --run-all
+```
 
+## Generate Large Test Data
+
+```bash
+python code/generate_sales_data.py --rows 100000 --out data/raw/sales_data_large.csv
+```
+
+## Validation
+
+```bash
+pytest -q tests
+```

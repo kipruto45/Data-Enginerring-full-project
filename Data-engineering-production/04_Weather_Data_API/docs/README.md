@@ -1,8 +1,30 @@
 # 04_Weather_Data_API
 
-Starter project to fetch weather data from an API and summarize results.
+Runbook for weather ETL pipeline execution.
 
-How to use:
-- Implement `fetch_weather` in `code/weather_etl.py` using your preferred weather API
-- Run: `python code/weather_etl.py`
-- Results are written to `results/weather_summary.csv`
+## Generate Input Data
+
+```bash
+python code/generate_weather_data.py --rows 50000 --out data/raw/weather_observations_large.csv
+```
+
+## Run ETL
+
+```bash
+python code/weather_etl_pipeline.py \
+  --input data/raw/weather_observations_large.csv \
+  --db results/weather_large.db \
+  --batch-size 5000 \
+  --progress 20000 \
+  --fast
+```
+
+## Validate
+
+```bash
+pytest -q tests
+```
+
+## Output Tables
+
+- `weather` (in SQLite DB): loaded weather observations

@@ -1,8 +1,35 @@
 # 03_SQL_Data_Aggregation
 
-SQL examples for aggregating sales data. Place a CSV at `data/raw/sales_data.csv` and
-use your preferred SQLite or SQL tool to load and query.
+Runbook for loading sales data and executing SQL aggregations.
 
-Example:
-- Load into SQLite using `.import` or a small Python script
-- Run: `sqlite3 db.sqlite < code/sql_queries.sql` (after loading data)
+## Load Data
+
+```bash
+python code/aggregation.py --csv data/raw/sales_data.csv --db results/sales.db --load-csv
+```
+
+## Execute a Query
+
+```bash
+python code/aggregation.py \
+  --db results/sales.db \
+  --query "SELECT product, SUM(amount) AS revenue FROM sales GROUP BY product ORDER BY revenue DESC"
+```
+
+## Execute Query Batch
+
+```bash
+python code/aggregation.py --db results/sales.db --queries-file code/sql_queries.sql --run-all
+```
+
+## Generate Large Test Data
+
+```bash
+python code/generate_sales_data.py --rows 100000 --out data/raw/sales_data_large.csv
+```
+
+## Validation
+
+```bash
+pytest -q tests
+```

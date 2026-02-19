@@ -1,8 +1,21 @@
 # 04_Weather_Data_API
 
-Starter project to fetch weather data from an API and summarize results.
+Operational notes for the starter weather ETL script.
 
-How to use:
-- Implement `fetch_weather` in `code/weather_etl.py` using your preferred weather API
-- Run: `python code/weather_etl.py`
-- Results are written to `results/weather_summary.csv`
+## Run Script
+
+```bash
+python code/weather_etl.py
+```
+
+## Current Behavior
+
+- Uses hardcoded locations (`Nairobi`, `London`, `New York`)
+- Calls placeholder `fetch_weather()` logic
+- Writes output CSV to `results/weather_summary.csv`
+
+## Recommended Next Improvements
+
+- Externalize locations via CLI arguments
+- Add real HTTP API integration
+- Add logging, retries, and tests

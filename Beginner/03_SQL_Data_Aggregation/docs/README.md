@@ -1,8 +1,24 @@
 # 03_SQL_Data_Aggregation
 
-SQL examples for aggregating sales data. Place a CSV at `data/raw/sales_data.csv` and
-use your preferred SQLite or SQL tool to load and query.
+This starter project provides SQL scaffolding for sales aggregation.
 
-Example:
-- Load into SQLite using `.import` or a small Python script
-- Run: `sqlite3 db.sqlite < code/sql_queries.sql` (after loading data)
+## Files
+
+- `code/sql_queries.sql`: Base table DDL and sample query
+- `data/raw/sales_data.csv`: Input data sample
+
+## Suggested Workflow
+
+1. Create a SQLite database.
+2. Run `code/sql_queries.sql`.
+3. Load `data/raw/sales_data.csv` into `sales`.
+4. Execute aggregation queries for reporting.
+
+Example aggregation:
+
+```sql
+SELECT region, SUM(amount) AS total
+FROM sales
+GROUP BY region
+ORDER BY total DESC;
+```
